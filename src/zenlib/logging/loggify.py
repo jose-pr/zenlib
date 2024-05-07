@@ -5,9 +5,14 @@ from .colorlognameformatter import ColorLognameFormatter
 
 from logging import Logger, getLogger, StreamHandler
 from sys import modules
+from typing import Protocol, TypeVar
 
+class _Loggified(Protocol):
+    logger:Logger
 
-def loggify(cls):
+C = TypeVar('C', bound=type)
+
+def loggify(cls:C) -> C | _Loggified:
     def _has_handler(logger):
         while logger:
             if logger.handlers:
